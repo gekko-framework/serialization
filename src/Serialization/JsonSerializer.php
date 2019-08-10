@@ -28,7 +28,7 @@ class JsonSerializer
      * deserialize the object by using the \Gekko\Serialization\JsonDescriptor
      * object.
      */
-    public static function deserialize(string $jsonsrc, string $class) : object
+    public static function deserialize(string $class, string $jsonsrc) : object
     {
         $classes = class_implements($class);
         
@@ -50,6 +50,9 @@ class JsonSerializer
         foreach ($descriptor->properties as $propertyDescriptor)
         {
             $name = $propertyDescriptor->name;
+
+            if (!isset($source[$name]))
+                continue;
             
             $refproperty = $refclass->getProperty($name);
 
