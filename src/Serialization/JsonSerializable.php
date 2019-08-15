@@ -32,8 +32,11 @@ trait JsonSerializable
         foreach ($descriptor->properties as $propertyDescriptor)
         {
             $name = $propertyDescriptor->name;
-            
-            $properties[$name] = $this->{$name};
+
+            if (!isset($this->{$name}) && isset($propertyDescriptor->default_value))
+                $properties[$name] = $propertyDescriptor->default_value;
+            else
+                $properties[$name] = $this->{$name};
         }
 
         return $properties;

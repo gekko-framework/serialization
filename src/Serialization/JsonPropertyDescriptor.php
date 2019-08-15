@@ -40,12 +40,17 @@ class JsonPropertyDescriptor
     /**
      * @var bool
      */
-    public $isarray;
+    public $is_array;
+
+    /**
+     * @var mixed
+     */
+    public $default_value;
 
     public function __construct($name)
     {
         $this->name = $name;
-        $this->isarray = false;
+        $this->is_array = false;
     }
 
     public function type(string $type) : self
@@ -158,7 +163,13 @@ class JsonPropertyDescriptor
 
     public function array() : self
     {
-        $this->isarray = true;
+        $this->is_array = true;
+        return $this;
+    }
+
+    public function default($default_value) : self
+    {
+        $this->default_value = $default_value;
         return $this;
     }
 }

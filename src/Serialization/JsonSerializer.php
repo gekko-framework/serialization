@@ -51,14 +51,14 @@ class JsonSerializer
         {
             $name = $propertyDescriptor->name;
 
-            if (!isset($source[$name]))
+            if (!isset($source[$name]) && !isset($propertyDescriptor->default_value))
                 continue;
             
             $refproperty = $refclass->getProperty($name);
 
             $refproperty->setAccessible(true);
 
-            $refproperty->setValue($target, self::getValue($propertyDescriptor, $source[$name]));
+            $refproperty->setValue($target, !isset($source[$name]) ? $propertyDescriptor->default_value : self::getValue($propertyDescriptor, $source[$name]));
         }
 
         return $target;
@@ -66,7 +66,7 @@ class JsonSerializer
 
     private static function getValue(\Gekko\Serialization\JsonPropertyDescriptor $propertyDescriptor, $object)
     {
-        return $propertyDescriptor->isarray
+        return $propertyDescriptor->is_array
             ? self::getArrayValue($propertyDescriptor, $object) 
             : self::getObjectValue($propertyDescriptor, $object);
     }
